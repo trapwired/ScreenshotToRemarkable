@@ -8,6 +8,8 @@ from PIL import ImageGrab
 from pynput.mouse import Listener
 from fpdf import FPDF
 
+RMAPI_EXEC_PATH = "/Users/fluffyoctopus/dev/rmapi/rmapi"
+
 x_coordinates = []
 y_coordinates = []
 
@@ -26,14 +28,23 @@ def on_click(x, y, button, pressed):
 def take_screenshot():
     with Listener(
             on_click=on_click
-    ) as listener: listener.join()
+    ) as listener:
+        listener.join()
 
     region = (min(x_coordinates), min(y_coordinates), max(x_coordinates), max(y_coordinates))
     screenshot = ImageGrab.grab(region)
     gray_img = screenshot.convert("L")
-    filename = "TempImage.png"
-    gray_img.save(filename)
-    return filename
+    image_filename = "TempImage.png"
+    gray_img.save(image_filename)
+    return image_filename
+
+
+def get_pdf_filename():
+    filename = "file" + str(random.randint(0, 42))
+    if len(sys.argv) > 1:
+        filename = sys.argv[1]
+    pdf_filename = filename + '.pdf'
+    return pdf_filename
 
 
 def create_pdf(image_filename, pdf_filename):
@@ -44,31 +55,23 @@ def create_pdf(image_filename, pdf_filename):
 
     pdf.output(pdf_filename)
 
-    os.remove(image_filename)
-
 
 def put_on_remarkable(name):
-    # TODO put at special location?
-    # TODO make sure, filename does not yet exist, maybe pass as input?
-    args = ("/Users/fluffyoctopus/dev/rmapi/rmapi", "put", name)
+    args = (RMAPI_EXEC_PATH, "put", name)
     popen = subprocess.Popen(args, stdout=subprocess.PIPE)
     popen.wait()
     output = popen.stdout.read()
-    return output
+    print(output)
+
+
+def delete_temp_files(image_filename, pdf_filename):
+    os.remove(image_filename)
+    os.remove(pdf_filename)
 
 
 if __name__ == '__main__':
     image = take_screenshot()
-    filename = "file" + str(random.randint(0,42))
-    if len(sys.argv) > 1:
-        filename = sys.argv[1]
-    pdf_filename = filename + '.pdf'
+    pdf_filename = get_pdf_filename()
     create_pdf(image, pdf_filename)
-    output = put_on_remarkable(pdf_filename)
-    os.remove(pdf_filename)
-    print(output)
-    # TODO maybe take several screenshots? put in same document? --> How to finish? (evtl timer?)
-
-# https://blog.aspose.com/pdf/create-pdf-files-in-python/
-# https://github.com/juruen/rmapi
-# https://github.com/subutux/rmapy/blob/master/docs/source/quickstart.rst
+    put_on_remarkable(pdf_filename)
+    delete_temp_files(image, pdf_filename)
