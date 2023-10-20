@@ -16,7 +16,8 @@ A short script to send a screenshot to a remarkable2 Tablet
 - change the button to select the area in main.py:18
 
 # ToDo-List
-- [ ] overlay while screenshoting to avoid manipulating screen
-- [ ] indicate selected area with rectangle overlay
-- [ ] take multiple screenshots, put in one file
-
+- [ ] Overlay while screenshoting to avoid manipulating screen
+- [ ] Indicate selected area with rectangle overlay
+- [ ] Take multiple screenshots, put in one file (Timer to finish?)
+- [ ] Put file in specific folder on remarkable
+- [ ] Make sure, file does not exist, if so, retry
