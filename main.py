@@ -1,13 +1,12 @@
 import random
 import subprocess
 import sys
-from tkinter import *
+import os
 
 import pynput.mouse
 from PIL import ImageGrab
 from pynput.mouse import Listener
 from fpdf import FPDF
-import os
 
 x_coordinates = []
 y_coordinates = []
