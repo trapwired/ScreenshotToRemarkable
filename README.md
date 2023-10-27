@@ -21,3 +21,6 @@ A short script to send a screenshot to a remarkable2 Tablet
 - [ ] Take multiple screenshots, put in one file (Timer to finish?)
 - [ ] Put file in specific folder on remarkable
 - [ ] Make sure, file does not exist, if so, retry
+
+# Try out
+- [ ] Create doc, upload, open on remarkable, append next screenshot to same doc, and upload again (what about changes done on rm2?)
